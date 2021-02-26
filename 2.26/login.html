@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="">
+    <table>
+        <tr>
+            <td>用户名</td>
+            <td><input type="text" name="account"></td>
+        </tr>
+        <tr>
+            <td>密码</td>
+            <td><input type="password" name="pwd" id=""></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button id="but">登录</button></td>
+        </tr>
+    </table>
+</form>
+<script>
+    var form=document.forms[0]
+    form.addEventListener('submit',function (event) {
+        event.preventDefault()
+        var input = form.getElementsByTagName('input')
+        var str = "";
+        for(var i=0;i<input.length;i++){
+            if(input[i].getAttribute("name")==null){
+                continue
+            }
+            var k = input[i].getAttribute("name")
+            var v = input[i].value
+            str += k+"="+v+"&"
+        }
+        new_str = str.substring(0,str.length-1)
+       var xhr = new XMLHttpRequest()
+        xhr.onreadystatechange = function () {
+            if(xhr.readyState===4&&xhr.status===200){
+                var  text = JSON.parse(xhr.responseText)
+                if(text.erron==0){
+                    alert(text.mgs);
+                    location.href='stu.php';
+                }
+            }
+        }
+        xhr.open('post','login.php')
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.send(new_str)
+    })
+</script>
+</body>
+</html>
